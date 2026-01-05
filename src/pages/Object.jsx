@@ -57,6 +57,15 @@ export default function Object() {
     if (!items) navigate("/");
   }, [items, navigate]);
 
+useEffect(() => {
+  gsap.fromTo(
+    "main",
+    { opacity: 0 },
+    { opacity: 1, duration: 0.6, ease: "power2.out" }
+  );
+}, []);
+
+
   /* entrance animation（PC/SP共通・軽め） */
   useEffect(() => {
     if (!rootRef.current) return;

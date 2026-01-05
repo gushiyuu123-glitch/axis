@@ -56,40 +56,29 @@ export default function Collections() {
   /* =====================
      NAVIGATION
   ===================== */
-  const goObject = (slug) => {
-    const el = bgRefs.current[slug];
+const goObject = (slug) => {
+  const el = bgRefs.current[slug];
 
-    /* ===== SP：タップ専用演出 ===== */
-    if (isSP) {
-      if (el) {
-        gsap.set(el, {
+  /* ===== SP：安全版 ===== */
+  if (isSP) {
+    if (el) {
+      gsap.fromTo(
+        el,
+        { opacity: 0.25, scale: 1.04, filter: "blur(6px)" },
+        {
           opacity: 0,
-          scale: 1.04,
-          filter: "blur(6px)",
-        });
-        gsap.to(el, {
-          opacity: 0.35,
           scale: 1,
           filter: "blur(0px)",
-          duration: 0.35,
+          duration: 0.25,
           ease: "power2.out",
-        });
-      }
-
-      gsap.to("body", {
-        opacity: 0,
-        duration: 0.4,
-        delay: 0.25,
-        ease: "power1.out",
-        onComplete: () => {
-          navigate(`/object/${slug}`);
-          gsap.set("body", { opacity: 1 });
-        },
-      });
-
-      return;
+        }
+      );
     }
 
+    // 即遷移（body触らない）
+    navigate(`/object/${slug}`);
+    return;
+  }
     /* ===== PC（既存挙動そのまま）===== */
     if (el) {
       gsap.to(el, {
