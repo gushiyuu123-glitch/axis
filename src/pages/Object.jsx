@@ -64,6 +64,9 @@ useEffect(() => {
     { opacity: 1, duration: 0.6, ease: "power2.out" }
   );
 }, []);
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "instant" });
+}, [slug]);
 
 
   /* entrance animation（PC/SP共通・軽め） */
