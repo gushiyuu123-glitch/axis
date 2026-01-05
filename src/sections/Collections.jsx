@@ -56,7 +56,7 @@ export default function Collections() {
   /* =====================
      NAVIGATION
   ===================== */
-const goObject = (slug) => {
+ const goObject = (slug) => {
   const el = bgRefs.current[slug];
 
   /* ===== SP：安全版 ===== */
@@ -75,32 +75,36 @@ const goObject = (slug) => {
       );
     }
 
-    // 即遷移（body触らない）
+    // ★ ここでトップ固定
+    window.scrollTo({ top: 0, behavior: "instant" });
+
     navigate(`/object/${slug}`);
     return;
   }
-    /* ===== PC（既存挙動そのまま）===== */
-    if (el) {
-      gsap.to(el, {
-        opacity: 0.35,
-        scale: 1.02,
-        duration: 0.25,
-        ease: "power2.out",
-      });
-    }
-
-    gsap.to("body", {
-      opacity: 0,
-      duration: 0.5,
-      delay: 0.15,
-      ease: "power1.out",
-      onComplete: () => {
-        navigate(`/object/${slug}`);
-        gsap.to("body", { opacity: 1, duration: 0.4 });
-      },
+  /* ===== PC（既存挙動）===== */
+  if (el) {
+    gsap.to(el, {
+      opacity: 0.35,
+      scale: 1.02,
+      duration: 0.25,
+      ease: "power2.out",
     });
-  };
+  }
 
+  gsap.to("body", {
+    opacity: 0,
+    duration: 0.5,
+    delay: 0.15,
+    ease: "power1.out",
+    onComplete: () => {
+      // ★ ここでもトップ固定
+      window.scrollTo({ top: 0, behavior: "instant" });
+
+      navigate(`/object/${slug}`);
+      gsap.to("body", { opacity: 1, duration: 0.4 });
+    },
+  });
+};
   /* =====================
      BACKGROUND CONTROL（PC ONLY）
   ===================== */
