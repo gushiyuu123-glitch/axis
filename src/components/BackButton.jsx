@@ -1,29 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function BackButton({
   actions = [], // [{ to, label, icon }]
   className = "",
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (action) => {
-    // ===== SP 判定 =====
-    const isSP = window.matchMedia("(max-width: 768px)").matches;
-
-    // 明示的な遷移先がある場合は最優先
+    // ===== 明示的遷移先があれば最優先 =====
     if (action.to) {
       navigate(action.to);
       return;
     }
 
-    // SP は history に依存しない
-    if (isSP) {
-      navigate("/", { replace: true });
-      return;
-    }
+    // ===== SP 判定 =====
+    const isSP = window.matchMedia("(max-width: 768px)").matches;
 
-    // PC のみ history back
-    navigate(-1);
+    // ===== 履歴判定 =====
+    const hasHistory = window.history.length > 1;
+
+    /**
+     * 判断軸：
+     * - SP：履歴が壊れやすい → 安定優先
+     * - PC：履歴があれば戻る
+     * - 外部流入 / 直リンク：トップ
+     */
+
+    if (hasHistory && !isSP) {
+      navigate(-1);
+    } else {
+      navigate("/", { replace: true });
+    }
   };
 
   return (
@@ -47,13 +55,14 @@ export default function BackButton({
             transition
             select-none
 
-            /* SP タップ補強（見た目は変えない） */
-            px-2 py-2
+            /* SP タップ補強（見た目維持） */
+            px-3 py-3
             md:px-0 md:py-0
 
-            /* iOS対策 */
+            /* iOS / Safari 安定化 */
             focus:outline-none
             active:opacity-80
+            touch-manipulation
           "
           aria-label={action.label}
         >

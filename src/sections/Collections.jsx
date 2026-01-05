@@ -56,55 +56,53 @@ export default function Collections() {
   /* =====================
      NAVIGATION
   ===================== */
- const goObject = (slug) => {
-  const el = bgRefs.current[slug];
+  const goObject = (slug) => {
+    const el = bgRefs.current[slug];
 
-  /* ===== SP：安全版 ===== */
-  if (isSP) {
-    if (el) {
-      gsap.fromTo(
-        el,
-        { opacity: 0.25, scale: 1.04, filter: "blur(6px)" },
-        {
-          opacity: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 0.25,
-          ease: "power2.out",
-        }
-      );
+    /* ===== SP：安全版 ===== */
+    if (isSP) {
+      if (el) {
+        gsap.fromTo(
+          el,
+          { opacity: 0.25, scale: 1.04, filter: "blur(6px)" },
+          {
+            opacity: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.25,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      window.scrollTo({ top: 0, behavior: "instant" });
+      navigate(`/object/${slug}`);
+      return;
     }
 
-    // ★ ここでトップ固定
-    window.scrollTo({ top: 0, behavior: "instant" });
+    /* ===== PC（既存挙動：完全維持）===== */
+    if (el) {
+      gsap.to(el, {
+        opacity: 0.35,
+        scale: 1.02,
+        duration: 0.25,
+        ease: "power2.out",
+      });
+    }
 
-    navigate(`/object/${slug}`);
-    return;
-  }
-  /* ===== PC（既存挙動）===== */
-  if (el) {
-    gsap.to(el, {
-      opacity: 0.35,
-      scale: 1.02,
-      duration: 0.25,
-      ease: "power2.out",
+    gsap.to("body", {
+      opacity: 0,
+      duration: 0.5,
+      delay: 0.15,
+      ease: "power1.out",
+      onComplete: () => {
+        window.scrollTo({ top: 0, behavior: "instant" });
+        navigate(`/object/${slug}`);
+        gsap.to("body", { opacity: 1, duration: 0.4 });
+      },
     });
-  }
+  };
 
-  gsap.to("body", {
-    opacity: 0,
-    duration: 0.5,
-    delay: 0.15,
-    ease: "power1.out",
-    onComplete: () => {
-      // ★ ここでもトップ固定
-      window.scrollTo({ top: 0, behavior: "instant" });
-
-      navigate(`/object/${slug}`);
-      gsap.to("body", { opacity: 1, duration: 0.4 });
-    },
-  });
-};
   /* =====================
      BACKGROUND CONTROL（PC ONLY）
   ===================== */
@@ -249,7 +247,7 @@ export default function Collections() {
           py-[18vh] md:py-[28vh]
         "
       >
-        <p className="uppercase tracking-[0.32em] text-[0.65rem] text-muted mb-24">
+        <p className="uppercase tracking-[0.32em] text-[0.65rem] text-muted mb-24 text-center md:text-left">
           Collections
         </p>
 
@@ -260,7 +258,10 @@ export default function Collections() {
               onMouseEnter={() => showBg(c.slug)}
               onMouseLeave={hideBg}
               onClick={() => goObject(c.slug)}
-              className="group cursor-pointer select-none"
+              className="
+                group cursor-pointer select-none
+                text-center md:text-left
+              "
             >
               <h3
                 className="
@@ -272,21 +273,41 @@ export default function Collections() {
 
                   text-[clamp(2.2rem,10vw,3rem)]
                   md:text-[clamp(2.8rem,6vw,4.4rem)]
+
+                  mx-auto md:mx-0
                 "
               >
                 {c.label}
               </h3>
 
-              <p className="mt-3 text-[0.55rem] tracking-[0.42em] text-[var(--silver-dark)] uppercase">
+              <p
+                className="
+                  mt-3
+                  text-[0.55rem]
+                  tracking-[0.42em]
+                  text-[var(--silver-dark)]
+                  uppercase
+                  text-center md:text-left
+                "
+              >
                 {c.sub}
               </p>
 
               <span
                 className="
-                  block mt-6 w-[56px] h-px
-                  bg-[var(--silver-dark)] opacity-30
+                  block mt-6 h-px
+                  bg-[var(--silver-dark)]
+                  opacity-30
                   transition-all duration-700
-                  group-hover:w-[120px]
+
+                  mx-auto
+                  w-[48px]
+                  group-hover:w-[96px]
+
+                  md:mx-0
+                  md:w-[56px]
+                  md:group-hover:w-[120px]
+
                   group-hover:opacity-60
                 "
               />
