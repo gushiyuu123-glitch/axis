@@ -1,48 +1,7 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-
+// src/sections/Definition.jsx
 export default function Definition() {
-  const sectionRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const content = contentRef.current;
-    if (!section || !content) return;
-
-    // 初期状態ロック
-    gsap.set(content, {
-      opacity: 0,
-      y: 12,
-    });
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-
-        gsap.to(content, {
-          opacity: 1,
-          y: 0,
-          duration: 1.4,
-          ease: "power2.out",
-        });
-
-        observer.disconnect();
-      },
-      {
-        rootMargin: "-25% 0px -25% 0px",
-        threshold: 0,
-      }
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       className="
         relative
         max-w-3xl
@@ -61,6 +20,7 @@ export default function Definition() {
     >
       {/* =====================
           ABSTRACT BACKGROUND
+          ※ 空気だけ。動かさない
       ===================== */}
       <div
         aria-hidden
@@ -80,8 +40,9 @@ export default function Definition() {
 
       {/* =====================
           CONTENT
+          ※ 最初から在る
       ===================== */}
-      <div ref={contentRef} className="relative z-10">
+      <div className="relative z-10">
         <p
           className="
             mb-10
