@@ -22,8 +22,8 @@ export default function Essays() {
           opacity: 1,
           y: 0,
           duration: 1.2,
-          ease: "power2.out",
-          stagger: 0.28,
+ ease: "power2.out",
+ stagger: 0.36,
         });
 
         observer.disconnect(); // 一度きり
