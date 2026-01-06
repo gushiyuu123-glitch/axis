@@ -1,52 +1,12 @@
 // src/sections/AfterCollections.jsx
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-
 export default function AfterCollections() {
-  const sectionRef = useRef(null);
-  const whisperRef = useRef(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const whisper = whisperRef.current;
-    if (!section || !whisper) return;
-
-    // ===== 初期状態（少しだけ近づけて存在感アップ）=====
-    gsap.set(whisper, {
-      opacity: 0,
-      y: 10, // ← 14 → 10
-    });
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-
-        gsap.to(whisper, {
-          opacity: 1,
-          y: 0,
-          duration: 1.35, // ← 1.6 → 1.35
-          ease: "power2.out",
-        });
-
-        observer.disconnect(); // 一度だけ
-      },
-      {
-        rootMargin: "-30% 0px -25% 0px",
-        threshold: 0,
-      }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       {/* =====================
-          AFTER COLLECTIONS（PC完成形）
+          AFTER COLLECTIONS（完成形）
+          ※ 演出なし・余韻のみ
       ===================== */}
       <section
-        ref={sectionRef}
         aria-label="After Collections"
         className="
           relative
@@ -79,8 +39,14 @@ export default function AfterCollections() {
             WHISPER COPY
         ===================== */}
         <div
-          ref={whisperRef}
-          className="relative mt-28 flex flex-col items-center text-center"
+          className="
+            relative
+            mt-28
+            flex
+            flex-col
+            items-center
+            text-center
+          "
         >
           {/* 上：判断（主） */}
           <p
@@ -89,7 +55,7 @@ export default function AfterCollections() {
               tracking-[0.3em]
               text-[var(--silver-mid)]
               leading-[2.4]
-              opacity-95   /* ← わずかに芯を太く */
+              opacity-95
             "
           >
             似合うかどうかは、もう決まっている。
