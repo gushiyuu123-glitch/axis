@@ -1,5 +1,46 @@
 // src/sections/AfterCollections.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function AfterCollections() {
+  const sectionRef = useRef(null);
+  const whisperRef = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const whisper = whisperRef.current;
+    if (!section || !whisper) return;
+
+    // 初期状態ロック（存在感を消す）
+    gsap.set(whisper, {
+      opacity: 0,
+      y: 14,
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        gsap.to(whisper, {
+          opacity: 1,
+          y: 0,
+          duration: 1.6,
+          ease: "power2.out",
+        });
+
+        observer.disconnect();
+      },
+      {
+        rootMargin: "-30% 0px -25% 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       {/* =====================
@@ -7,6 +48,7 @@ export default function AfterCollections() {
           ※ 中身は一切変更しない
       ===================== */}
       <section
+        ref={sectionRef}
         aria-label="After Collections"
         className="
           relative
@@ -38,7 +80,10 @@ export default function AfterCollections() {
         {/* =====================
             WHISPER COPY
         ===================== */}
-        <div className="relative mt-28 flex flex-col items-center text-center">
+        <div
+          ref={whisperRef}
+          className="relative mt-28 flex flex-col items-center text-center"
+        >
           {/* 上：判断（主） */}
           <p
             className="

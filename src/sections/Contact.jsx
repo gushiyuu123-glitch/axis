@@ -1,5 +1,45 @@
 // src/sections/Contact.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function Contact() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const lines = section.querySelectorAll("[data-line]");
+    if (!lines.length) return;
+
+    // 初期状態ロック
+    gsap.set(lines, { opacity: 0, y: 10 });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        gsap.to(lines, {
+          opacity: 1,
+          y: 0,
+          duration: 1.1,
+          ease: "power2.out",
+          stagger: 0.18,
+        });
+
+        observer.disconnect();
+      },
+      {
+        rootMargin: "-25% 0px -20% 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       {/* =====================
@@ -7,6 +47,7 @@ export default function Contact() {
           ※ 中身は一切変更しない
       ===================== */}
       <section
+        ref={sectionRef}
         id="contact"
         aria-label="Contact"
         className="
@@ -29,6 +70,7 @@ export default function Contact() {
         >
           {/* 上段：日本語 */}
           <p
+            data-line
             className="
               text-center
               text-[0.7rem]
@@ -44,6 +86,7 @@ export default function Contact() {
 
           {/* 区切り */}
           <span
+            data-line
             aria-hidden
             className="
               block
@@ -66,19 +109,20 @@ export default function Contact() {
               gap-6
             "
           >
-    <p
-  className="
-    text-[0.6rem] md:text-[0.65rem]
-    tracking-[0.32em]
-    text-[var(--silver-dark)]
-    opacity-75
-  "
->
-  必要になったときに、話せる場所は用意しています。
-</p>
-
+            <p
+              data-line
+              className="
+                text-[0.6rem] md:text-[0.65rem]
+                tracking-[0.32em]
+                text-[var(--silver-dark)]
+                opacity-75
+              "
+            >
+              必要になったときに、話せる場所は用意しています。
+            </p>
 
             <p
+              data-line
               className="
                 text-[0.6rem]
                 tracking-[0.32em]
@@ -91,6 +135,7 @@ export default function Contact() {
             </p>
 
             <a
+              data-line
               href="/contact"
               className="
                 mt-2
@@ -121,7 +166,7 @@ export default function Contact() {
           pb-24
         "
       >
-
+        {/* 次で設計 */}
       </div>
     </>
   );

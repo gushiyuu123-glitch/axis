@@ -6,16 +6,24 @@ export default function Statement() {
   const textRef = useRef(null);
   const jpRef = useRef(null);
   const wrapperRef = useRef(null);
+  const sectionRef = useRef(null);
   const hasPlayed = useRef(false);
 
   useEffect(() => {
     const text = textRef.current;
     const jp = jpRef.current;
     const wrapper = wrapperRef.current;
-    if (!text || !wrapper || !jp) return;
+    const section = sectionRef.current;
+    if (!text || !jp || !wrapper || !section) return;
+
+    // ===== 初期状態（締めなので一塊で）=====
+    gsap.set([text, jp], {
+      opacity: 0,
+      y: 12,
+    });
 
     const createSparks = () => {
-      const count = 14; // 少し抑える（高級寄り）
+      const count = 14;
 
       const rectEN = text.getBoundingClientRect();
       const rectJP = jp.getBoundingClientRect();
@@ -25,9 +33,10 @@ export default function Statement() {
         setTimeout(() => {
           const spark = document.createElement("span");
           spark.className = "spark";
-spark.style.transform = `scale(${0.6 + Math.random() * 0.6})`;
-spark.style.opacity = 0.6 + Math.random() * 0.3;
-          // 7割EN / 3割JP から生まれる
+          spark.style.transform = `scale(${0.6 + Math.random() * 0.6})`;
+          spark.style.opacity = 0.6 + Math.random() * 0.3;
+
+          // 7割EN / 3割JP
           const baseRect = Math.random() < 0.7 ? rectEN : rectJP;
 
           const x =
@@ -47,11 +56,7 @@ spark.style.opacity = 0.6 + Math.random() * 0.3;
 
           gsap.fromTo(
             spark,
-            {
-              opacity: 0,
-              y: 0,
-              scale: 0.5,
-            },
+            { opacity: 0, y: 0, scale: 0.5 },
             {
               opacity: 0.8,
               y: 26 + Math.random() * 16,
@@ -67,27 +72,34 @@ spark.style.opacity = 0.6 + Math.random() * 0.3;
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasPlayed.current) {
-          createSparks();
-          hasPlayed.current = true;
-        }
+        if (!entry.isIntersecting || hasPlayed.current) return;
 
-        if (!entry.isIntersecting) {
-          hasPlayed.current = false; // 戻ってきたらまた一度だけ
-        }
+        // ① テキストを先に立ち上げる
+        gsap.to([text, jp], {
+          opacity: 1,
+          y: 0,
+          duration: 1.3,
+          ease: "power2.out",
+        });
+
+        // ② 少し遅れて火花
+        gsap.delayedCall(0.5, createSparks);
+
+        hasPlayed.current = true;
       },
       {
         threshold: 0.35,
-        rootMargin: "-15% 0px",
+        rootMargin: "-20% 0px -10% 0px",
       }
     );
 
-    io.observe(text);
+    io.observe(section);
     return () => io.disconnect();
   }, []);
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Statement"
       className="
         relative
@@ -97,6 +109,9 @@ spark.style.opacity = 0.6 + Math.random() * 0.3;
         justify-center
         text-center
         px-6
+
+        /* 上との余白を少し足す */
+        mt-[18vh] md:mt-[22vh]
       "
     >
       <div ref={wrapperRef} className="relative space-y-12">
@@ -115,7 +130,7 @@ spark.style.opacity = 0.6 + Math.random() * 0.3;
           this is not for you.
         </p>
 
-        {/* JP（芯だけ少し足す） */}
+        {/* JP（芯だけ） */}
         <p
           ref={jpRef}
           className="

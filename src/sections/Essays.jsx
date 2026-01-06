@@ -5,20 +5,38 @@ export default function Essays() {
   const rootRef = useRef(null);
 
   useEffect(() => {
-    const lines = rootRef.current.querySelectorAll("[data-line]");
+    const root = rootRef.current;
+    if (!root) return;
+
+    const lines = root.querySelectorAll("[data-line]");
     if (!lines.length) return;
 
-    gsap.fromTo(
-      lines,
-      { opacity: 0, y: 6 },
+    // 初期状態をロック（画面外でも表示されない）
+    gsap.set(lines, { opacity: 0, y: 10 });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        gsap.to(lines, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power2.out",
+          stagger: 0.28,
+        });
+
+        observer.disconnect(); // 一度きり
+      },
       {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power2.out",
-        stagger: 0.25,
+        rootMargin: "-20% 0px -20% 0px",
+        threshold: 0,
       }
     );
+
+    observer.observe(root);
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -119,7 +137,7 @@ export default function Essays() {
           pb-24
         "
       >
-
+        {/* ここは次で設計 */}
       </div>
     </>
   );
