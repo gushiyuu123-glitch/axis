@@ -21,9 +21,9 @@ export default function Essays() {
         gsap.to(lines, {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power2.out",
-          stagger: 0.28,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.25,
         });
 
         observer.disconnect(); // 一度きり
