@@ -44,9 +44,7 @@ export default function Home() {
           COLLECTIONS（選択）
       ===================== */}
       <section id="collections" >
-        <div data-collections>
         <Collections />
-        </div>
       </section>
 
       {/* =====================
