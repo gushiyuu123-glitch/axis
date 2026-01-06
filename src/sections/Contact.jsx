@@ -46,19 +46,23 @@ export default function Contact() {
           CONTACT（PC完成形）
           ※ 中身は一切変更しない
       ===================== */}
-      <section
-        ref={sectionRef}
-        id="contact"
-        aria-label="Contact"
-        className="
-          relative
-          min-h-[42vh]
-          flex
-          items-center
-          justify-center
-          px-6
-        "
-      >
+  <section
+  ref={sectionRef}
+  id="contact"
+  aria-label="Contact"
+  className="
+    relative
+    min-h-[42vh]
+    flex
+    items-center
+    justify-center
+    px-6
+
+    /* 上の余白（入りの呼吸） */
+    mt-[12vh] md:mt-[16vh]
+  "
+>
+
         <div
           className="
             w-full

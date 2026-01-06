@@ -1,7 +1,48 @@
 // src/components/Footer.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function Footer() {
+  const footerRef = useRef(null);
+  const axisRef = useRef(null);
+
+  useEffect(() => {
+    const footer = footerRef.current;
+    const axis = axisRef.current;
+    if (!footer || !axis) return;
+
+    // 初期状態（存在を消す）
+    gsap.set(axis, {
+      opacity: 0,
+      y: 8,
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        gsap.to(axis, {
+          opacity: 1,
+          y: 0,
+          duration: 1.4,
+          ease: "power2.out",
+        });
+
+        observer.disconnect(); // 一度だけ
+      },
+      {
+        rootMargin: "-30% 0px -10% 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <footer
+      ref={footerRef}
       aria-label="Footer"
       className="
         relative
@@ -9,13 +50,14 @@ export default function Footer() {
         py-28
         text-center
         border-t
-        border-white/10
+        border-white/10 
       "
     >
       {/* =====================
           BRAND TRACE
       ===================== */}
       <p
+        ref={axisRef}
         className="
           text-[0.65rem]
           tracking-[0.42em]
@@ -58,7 +100,6 @@ export default function Footer() {
           CREDIT + COPYRIGHT（消え際）
       ===================== */}
       <div className="space-y-4">
-        {/* クレジット（SEO用・主張しない） */}
         <a
           href="https://gushikendesign.com/"
           target="_blank"

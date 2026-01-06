@@ -1,16 +1,21 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function BackButton({
   actions = [], // [{ to, label, icon }]
   className = "",
 }) {
   const navigate = useNavigate();
-  const location = useLocation();
+
+  const resetScroll = () => {
+    // SP / iOS Safari 含めた確実リセット
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  };
 
   const handleClick = (action) => {
     // ===== 明示的遷移先があれば最優先 =====
     if (action.to) {
-      navigate(action.to);
+      resetScroll();
+      navigate(action.to, { replace: true });
       return;
     }
 
@@ -22,10 +27,11 @@ export default function BackButton({
 
     /**
      * 判断軸：
-     * - SP：履歴が壊れやすい → 安定優先
+     * - SP：履歴信用しない → 常にトップ
      * - PC：履歴があれば戻る
-     * - 外部流入 / 直リンク：トップ
+     * - 直リンク / 外部流入：トップ
      */
+    resetScroll();
 
     if (hasHistory && !isSP) {
       navigate(-1);

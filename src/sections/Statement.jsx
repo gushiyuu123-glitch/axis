@@ -16,10 +16,10 @@ export default function Statement() {
     const section = sectionRef.current;
     if (!text || !jp || !wrapper || !section) return;
 
-    // ===== 初期状態（締めなので一塊で）=====
+    // ===== 初期状態（締め：少しだけ軽く）=====
     gsap.set([text, jp], {
       opacity: 0,
-      y: 12,
+      y: 10, // ← 12 → 10（わずかに軽く）
     });
 
     const createSparks = () => {
@@ -74,16 +74,16 @@ export default function Statement() {
       ([entry]) => {
         if (!entry.isIntersecting || hasPlayed.current) return;
 
-        // ① テキストを先に立ち上げる
+        // ① テキスト（主→従）を少しキレ良く
         gsap.to([text, jp], {
           opacity: 1,
           y: 0,
-          duration: 1.3,
+          duration: 1.2, // ← 1.3 → 1.2
           ease: "power2.out",
         });
 
         // ② 少し遅れて火花
-        gsap.delayedCall(0.5, createSparks);
+        gsap.delayedCall(0.45, createSparks); // ← 0.5 → 0.45
 
         hasPlayed.current = true;
       },
@@ -110,8 +110,11 @@ export default function Statement() {
         text-center
         px-6
 
-        /* 上との余白を少し足す */
+        /* 上との余白 */
         mt-[18vh] md:mt-[22vh]
+
+        /* 下の余韻（沈黙） */
+        mb-[22vh] md:mb-[28vh]
       "
     >
       <div ref={wrapperRef} className="relative space-y-12">
@@ -123,6 +126,7 @@ export default function Statement() {
             text-[0.95rem]
             tracking-[0.26em]
             text-[var(--silver-mid)]
+            opacity-95   /* ← 主をほんの少しだけ太く */
           "
         >
           If you hesitate,

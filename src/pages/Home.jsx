@@ -10,8 +10,9 @@ import Essays from "../sections/Essays";
 import Statement from "../sections/Statement";
 import Contact from "../sections/Contact";
 import Footer from "../components/Footer";
-
+import useCollectionsFade from "../hooks/useCollectionsFade";
 export default function Home() {
+    useCollectionsFade();
   return (
     <>
       {/* =====================
@@ -42,8 +43,10 @@ export default function Home() {
       {/* =====================
           COLLECTIONS（選択）
       ===================== */}
-      <section id="collections">
+      <section id="collections" >
+        <div data-collections>
         <Collections />
+        </div>
       </section>
 
       {/* =====================

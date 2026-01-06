@@ -1,8 +1,11 @@
 // src/components/Nav.jsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const overlayRef = useRef(null);
+  const linksRef = useRef([]);
 
   const links = [
     { label: "Collections", href: "#collections" },
@@ -10,6 +13,40 @@ export default function Nav() {
     { label: "Inquiry", href: "#contact" },
     { label: "Statement", href: "#statement" },
   ];
+
+  /* =====================
+     SP MENU OPEN ANIMATION
+  ===================== */
+  useEffect(() => {
+    if (!open) return;
+
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    const tl = gsap.timeline();
+
+    // 初期状態ロック
+    gsap.set(overlay, { opacity: 0 });
+    gsap.set(linksRef.current, { opacity: 0, y: 10 });
+
+    tl.to(overlay, {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out",
+    }).to(
+      linksRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out",
+        stagger: 0.08,
+      },
+      "-=0.1"
+    );
+
+    return () => tl.kill();
+  }, [open]);
 
   return (
     <>
@@ -106,9 +143,10 @@ export default function Nav() {
       ===================== */}
       {open && (
         <div
+          ref={overlayRef}
           className="
             fixed inset-0
-            z-[60]               /* ← headerより上 */
+            z-[60]
             bg-black/95
             flex flex-col
             items-center justify-center
@@ -135,10 +173,11 @@ export default function Nav() {
           </button>
 
           {/* LINKS */}
-          {links.map(({ label, href }) => (
+          {links.map(({ label, href }, i) => (
             <a
               key={label}
               href={href}
+              ref={(el) => (linksRef.current[i] = el)}
               onClick={() => setOpen(false)}
               className="hover:opacity-70 transition"
             >

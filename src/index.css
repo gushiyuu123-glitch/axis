@@ -107,3 +107,18 @@ body {
 html {
   scroll-behavior: smooth;
 }
+/* H1専用スパーク */
+.title-spark {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.9),
+    rgba(255,255,255,0.4),
+    rgba(255,255,255,0)
+  );
+  pointer-events: none;
+  filter: blur(0.3px);
+}

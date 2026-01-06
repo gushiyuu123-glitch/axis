@@ -11,10 +11,10 @@ export default function AfterCollections() {
     const whisper = whisperRef.current;
     if (!section || !whisper) return;
 
-    // 初期状態ロック（存在感を消す）
+    // ===== 初期状態（少しだけ近づけて存在感アップ）=====
     gsap.set(whisper, {
       opacity: 0,
-      y: 14,
+      y: 10, // ← 14 → 10
     });
 
     const observer = new IntersectionObserver(
@@ -24,11 +24,11 @@ export default function AfterCollections() {
         gsap.to(whisper, {
           opacity: 1,
           y: 0,
-          duration: 1.6,
+          duration: 1.35, // ← 1.6 → 1.35
           ease: "power2.out",
         });
 
-        observer.disconnect();
+        observer.disconnect(); // 一度だけ
       },
       {
         rootMargin: "-30% 0px -25% 0px",
@@ -37,7 +37,6 @@ export default function AfterCollections() {
     );
 
     observer.observe(section);
-
     return () => observer.disconnect();
   }, []);
 
@@ -45,7 +44,6 @@ export default function AfterCollections() {
     <>
       {/* =====================
           AFTER COLLECTIONS（PC完成形）
-          ※ 中身は一切変更しない
       ===================== */}
       <section
         ref={sectionRef}
@@ -91,6 +89,7 @@ export default function AfterCollections() {
               tracking-[0.3em]
               text-[var(--silver-mid)]
               leading-[2.4]
+              opacity-95   /* ← わずかに芯を太く */
             "
           >
             似合うかどうかは、もう決まっている。
@@ -129,7 +128,6 @@ export default function AfterCollections() {
 
       {/* =====================
           SP ONLY：次へ進む重力
-          ※ PCには一切表示されない
       ===================== */}
       <div
         aria-hidden
