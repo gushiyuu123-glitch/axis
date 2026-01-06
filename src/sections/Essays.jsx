@@ -23,7 +23,7 @@ export default function Essays() {
           y: 0,
           duration: 1.2,
  ease: "power2.out",
- stagger: 0.36,
+ stagger:0.28,
         });
 
         observer.disconnect(); // 一度きり
