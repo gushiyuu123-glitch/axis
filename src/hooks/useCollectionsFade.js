@@ -3,17 +3,16 @@ import gsap from "gsap";
 
 export default function useCollectionsFade() {
   useEffect(() => {
-    // Ring / Necklace / Bracelet のみ対象
     const titles = document.querySelectorAll(
       "[data-collections] h3"
     );
 
     if (!titles.length) return;
 
-    // 初期状態（静か）
+    // 初期状態（ほぼ気配）
     gsap.set(titles, {
       opacity: 0,
-      y: 14,
+      y: 8,
     });
 
     const observer = new IntersectionObserver(
@@ -23,15 +22,15 @@ export default function useCollectionsFade() {
         gsap.to(titles, {
           opacity: 1,
           y: 0,
-          duration: 1.3,
-          ease: "power2.out",
-          stagger: 0.14,
+          duration: 1.0,
+          ease: "power1.out",
+          stagger: 0.08,
         });
 
         observer.disconnect();
       },
       {
-        rootMargin: "-25% 0px -25% 0px",
+        rootMargin: "-28% 0px -28% 0px",
         threshold: 0,
       }
     );
