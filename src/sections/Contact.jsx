@@ -1,68 +1,26 @@
 // src/sections/Contact.jsx
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-
 export default function Contact() {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const lines = section.querySelectorAll("[data-line]");
-    if (!lines.length) return;
-
-    // 初期状態ロック
-    gsap.set(lines, { opacity: 0, y: 10 });
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-
-        gsap.to(lines, {
-          opacity: 1,
-          y: 0,
-          duration: 1.1,
-          ease: "power2.out",
-          stagger: 0.18,
-        });
-
-        observer.disconnect();
-      },
-      {
-        rootMargin: "-25% 0px -20% 0px",
-        threshold: 0,
-      }
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       {/* =====================
-          CONTACT（PC完成形）
-          ※ 中身は一切変更しない
+          CONTACT（完成形）
+          ※ 演出なし・存在だけ
       ===================== */}
-  <section
-  ref={sectionRef}
-  id="contact"
-  aria-label="Contact"
-  className="
-    relative
-    min-h-[42vh]
-    flex
-    items-center
-    justify-center
-    px-6
+      <section
+        id="contact"
+        aria-label="Contact"
+        className="
+          relative
+          min-h-[42vh]
+          flex
+          items-center
+          justify-center
+          px-6
 
-    /* 上の余白（入りの呼吸） */
-    mt-[12vh] md:mt-[16vh]
-  "
->
-
+          /* 上の余白（入りの呼吸） */
+          mt-[12vh] md:mt-[16vh]
+        "
+      >
         <div
           className="
             w-full
@@ -74,7 +32,6 @@ export default function Contact() {
         >
           {/* 上段：日本語 */}
           <p
-            data-line
             className="
               text-center
               text-[0.7rem]
@@ -90,7 +47,6 @@ export default function Contact() {
 
           {/* 区切り */}
           <span
-            data-line
             aria-hidden
             className="
               block
@@ -114,7 +70,6 @@ export default function Contact() {
             "
           >
             <p
-              data-line
               className="
                 text-[0.6rem] md:text-[0.65rem]
                 tracking-[0.32em]
@@ -126,7 +81,6 @@ export default function Contact() {
             </p>
 
             <p
-              data-line
               className="
                 text-[0.6rem]
                 tracking-[0.32em]
@@ -139,7 +93,6 @@ export default function Contact() {
             </p>
 
             <a
-              data-line
               href="/contact"
               className="
                 mt-2
@@ -170,7 +123,7 @@ export default function Contact() {
           pb-24
         "
       >
-        {/* 次で設計 */}
+        {/* 何もしない余白 */}
       </div>
     </>
   );
