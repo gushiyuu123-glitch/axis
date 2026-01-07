@@ -1,12 +1,63 @@
 // src/sections/AfterCollections.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function AfterCollections() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const main = el.querySelector(".after-main");
+    const sub = el.querySelector(".after-sub");
+    const line = el.querySelector(".after-line");
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.out" },
+        });
+
+        tl.fromTo(
+          main,
+          { opacity: 0, y: 5 },
+          { opacity: 0.95, y: 0, duration: 1.6 }
+        )
+          .fromTo(
+            sub,
+            { opacity: 0, y: 4 },
+            { opacity: 0.9, y: 0, duration: 1.4 },
+            "-=0.7"
+          )
+          .fromTo(
+            line,
+            { opacity: 0, scaleX: 0.6 },
+            { opacity: 0.25, scaleX: 1, duration: 1.4 },
+            "-=0.8"
+          );
+
+        io.disconnect(); // 一度きり
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
       {/* =====================
-          AFTER COLLECTIONS（完成形）
-          ※ 演出なし・余韻のみ
+          AFTER COLLECTIONS
+          ※ 気配 → 判断 → 囁き → 沈黙
       ===================== */}
       <section
+        ref={sectionRef}
         aria-label="After Collections"
         className="
           relative
@@ -18,7 +69,7 @@ export default function AfterCollections() {
         "
       >
         {/* =====================
-            AIR ONLY（気配）
+            AIR ONLY（先に存在する気配）
         ===================== */}
         <div
           aria-hidden
@@ -48,9 +99,10 @@ export default function AfterCollections() {
             text-center
           "
         >
-          {/* 上：判断（主） */}
+          {/* 判断（主） */}
           <p
             className="
+              after-main
               text-[0.7rem]
               tracking-[0.3em]
               text-[var(--silver-mid)]
@@ -61,9 +113,10 @@ export default function AfterCollections() {
             似合うかどうかは、もう決まっている。
           </p>
 
-          {/* 下：条件（囁き） */}
+          {/* 条件（囁き） */}
           <p
             className="
+              after-sub
               mt-8
               text-[0.65rem]
               tracking-[0.42em]
@@ -80,6 +133,7 @@ export default function AfterCollections() {
           <span
             aria-hidden
             className="
+              after-line
               block
               mt-12
               w-[64px]
@@ -87,6 +141,7 @@ export default function AfterCollections() {
               bg-[var(--silver-dark)]
               opacity-25
               mx-auto
+              origin-center
             "
           />
         </div>

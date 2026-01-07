@@ -1,12 +1,70 @@
 // src/sections/Contact.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function Contact() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const block = el.querySelector(".contact-inner");
+    if (!block) return;
+
+    // 初期状態：右に寄せて沈黙
+    gsap.set(block, {
+      opacity: 0,
+      x: 22,
+      filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
+    });
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // 本体
+        tl.to(block, {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+        })
+          // 残像（影だけ一瞬）
+          .to(
+            block,
+            {
+              filter: "drop-shadow(-12px 0 16px rgba(255,255,255,0.18))",
+              duration: 0.25,
+            },
+            "-=0.45"
+          )
+          .to(block, {
+            filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
+            duration: 0.4,
+          });
+
+        io.disconnect(); // 一度きり
+      },
+   {
+  rootMargin: "-20% 0px -10% 0px",
+  threshold: 0,
+}
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
       {/* =====================
-          CONTACT（完成形）
-          ※ 演出なし・存在だけ
+          CONTACT
+          ※ 右から一瞬、存在を示す
       ===================== */}
       <section
+        ref={sectionRef}
         id="contact"
         aria-label="Contact"
         className="
@@ -16,13 +74,12 @@ export default function Contact() {
           items-center
           justify-center
           px-6
-
-          /* 上の余白（入りの呼吸） */
           mt-[12vh] md:mt-[16vh]
         "
       >
         <div
           className="
+            contact-inner
             w-full
             max-w-6xl
             flex
@@ -112,7 +169,6 @@ export default function Contact() {
 
       {/* =====================
           SP ONLY：スクロールの重力
-          ※ PCには一切表示されない
       ===================== */}
       <div
         aria-hidden
@@ -122,9 +178,7 @@ export default function Contact() {
           justify-center
           pb-24
         "
-      >
-        {/* 何もしない余白 */}
-      </div>
+      />
     </>
   );
 }

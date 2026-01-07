@@ -1,3 +1,4 @@
+// src/sections/Essays.jsx
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
@@ -11,8 +12,8 @@ export default function Essays() {
     const lines = root.querySelectorAll("[data-line]");
     if (!lines.length) return;
 
-    // 初期状態をロック（画面外でも表示されない）
-    gsap.set(lines, { opacity: 0, y: 10 });
+    // 初期状態をロック（画面外・侵入前は完全に沈黙）
+    gsap.set(lines, { opacity: 0, y: 6 });
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -21,21 +22,21 @@ export default function Essays() {
         gsap.to(lines, {
           opacity: 1,
           y: 0,
-        duration: 1,
-        ease: "power2.out",
-        stagger: 0.25,
+          duration: 1,
+          ease: "power2.out",
+          stagger: 0.25,
         });
 
         observer.disconnect(); // 一度きり
       },
       {
-        rootMargin: "-20% 0px -20% 0px",
+        // ↓ 深めに入ってから発火させる（次セクションと被らない）
+        rootMargin: "-35% 0px -35% 0px",
         threshold: 0,
       }
     );
 
     observer.observe(root);
-
     return () => observer.disconnect();
   }, []);
 
@@ -43,6 +44,7 @@ export default function Essays() {
     <>
       {/* =====================
           ESSAYS（PC完成形・触らない）
+          ※ 読み切らせてから終わる
       ===================== */}
       <section
         ref={rootRef}
@@ -125,20 +127,16 @@ export default function Essays() {
       </section>
 
       {/* =====================
-          SP ONLY：読み終わりの重力
-          ※ PC には一切表示されない
+          SP ONLY：読み終わりの無音
+          ※ 次セクションとの編集点
       ===================== */}
       <div
         aria-hidden
         className="
           md:hidden
-          flex
-          justify-center
-          pb-24
+          h-[12vh]
         "
-      >
-        {/* ここは次で設計 */}
-      </div>
+      />
     </>
   );
 }
