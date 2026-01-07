@@ -23,8 +23,9 @@ export default function Home() {
       {/* =====================
           HERO（直感）
       ===================== */}
+      <section id="top">
       <Hero />
-
+</section>
       {/* =====================
           SILENCE（呼吸）
       ===================== */}

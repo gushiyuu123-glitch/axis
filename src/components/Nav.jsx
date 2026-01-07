@@ -65,23 +65,72 @@ export default function Nav() {
           bg-black/40
         "
       >
-        {/* BRAND */}
-        <div
-          className="
-            font-serif
-            tracking-[0.22em]
-            text-[0.85rem]
-            bg-gradient-to-b
-            from-[var(--silver-mid)]
-            to-[var(--silver-dark)]
-            bg-clip-text
-            text-transparent
-            select-none
-          "
-        >
-          AXIS
-          <span className="ml-2 text-[#bfa76a]">—</span>
-        </div>
+   {/* BRAND LOGO */}
+<a
+  href="#top"
+  aria-label="Back to top"
+  className="
+    group
+    relative
+    flex
+    items-center
+    gap-3
+    font-serif
+    tracking-[0.22em]
+    text-[0.85rem]
+    select-none
+    transition
+  "
+>
+  {/* AXIS TEXT */}
+  <span
+    className="
+      relative
+      bg-gradient-to-b
+      from-[var(--silver-mid)]
+      to-[var(--silver-dark)]
+      bg-clip-text
+      text-transparent
+      transition-all
+      duration-300
+      group-hover:tracking-[0.28em]
+    "
+  >
+    AXIS
+  </span>
+
+  {/* AXIS LINE（縦軸） */}
+  <span
+    aria-hidden
+    className="
+      block
+      h-[18px]
+      w-px
+      bg-[var(--silver-dark)]
+      opacity-50
+      transition-all
+      duration-300
+      group-hover:opacity-80
+      group-hover:scale-y-110
+    "
+  />
+
+  {/* SUB MARK */}
+  <span
+    className="
+      text-[0.6rem]
+      tracking-[0.18em]
+      text-[#bfa76a]
+      opacity-70
+      transition
+      duration-300
+      group-hover:opacity-100
+    "
+  >
+    —
+  </span>
+</a>
+
 
         {/* PC NAV */}
         <nav className="hidden md:block">
