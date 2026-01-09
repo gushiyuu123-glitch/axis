@@ -33,10 +33,11 @@ gsap.to(items, {
 
         io.disconnect();
       },
-      {
-        rootMargin: "-25% 0px -20% 0px",
-        threshold: 0,
-      }
+{
+  rootMargin: "-45% 0px -18% 0px",
+  threshold: 0,
+}
+
     );
 
     io.observe(el);

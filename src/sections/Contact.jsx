@@ -51,7 +51,7 @@ const tl = gsap.timeline({
         io.disconnect(); // 一度きり
       },
 {
-  rootMargin: "-30% 0px -15% 0px", // ← ここ
+  rootMargin: "-40% 0px -15% 0px", // ← ここ
   threshold: 0,
 }
 

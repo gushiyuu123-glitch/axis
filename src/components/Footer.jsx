@@ -31,7 +31,7 @@ export default function Footer() {
         observer.disconnect(); // 一度だけ
       },
       {
-        rootMargin: "-30% 0px -10% 0px",
+        rootMargin: "-40% 0px -10% 0px",
         threshold: 0,
       }
     );

@@ -31,7 +31,7 @@ export default function Essays() {
       },
       {
         // ↓ 深めに入ってから発火させる（次セクションと被らない）
-        rootMargin: "-35% 0px -35% 0px",
+        rootMargin: "-36% 0px -35% 0px",
         threshold: 0,
       }
     );

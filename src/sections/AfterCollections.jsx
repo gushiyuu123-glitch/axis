@@ -12,39 +12,40 @@ export default function AfterCollections() {
     const main = el.querySelector(".after-main");
     const sub = el.querySelector(".after-sub");
     const line = el.querySelector(".after-line");
+const io = new IntersectionObserver(
+  ([entry]) => {
+    if (!entry.isIntersecting) return;
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
+    const tl = gsap.timeline({
+      defaults: { ease: "power2.out" },
+    });
 
-        const tl = gsap.timeline({
-          defaults: { ease: "power2.out" },
-        });
 tl.fromTo(
   main,
   { opacity: 0, y: 5 },
-  { opacity: 0.95, y: 0, duration: 1.35 } // 1.45 → 1.35
+  { opacity: 0.95, y: 0, duration: 1.05 }
 )
-  .fromTo(
-    sub,
-    { opacity: 0, y: 4 },
-    { opacity: 0.9, y: 0, duration: 1.2 }, // 1.3 → 1.2
-    "-=0.55" // -0.6 → -0.55
-  )
-  .fromTo(
-    line,
-    { opacity: 0, scaleX: 0.6 },
-    { opacity: 0.25, scaleX: 1, duration: 1.2 }, // 1.3 → 1.2
-    "-=0.65" // -0.7 → -0.65
-  );
+.fromTo(
+  sub,
+  { opacity: 0, y: 4 },
+  { opacity: 0.9, y: 0, duration: 0.95 },
+  "-=0.55"
+)
+.fromTo(
+  line,
+  { opacity: 0, scaleX: 0.6 },
+  { opacity: 0.25, scaleX: 1, duration: 0.9 },
+  "-=0.65"
+);
 
 
-        io.disconnect(); // 一度きり
-      },
-      {
-        threshold: 0.15,
-      }
-    );
+    io.disconnect();
+  },
+  {
+    rootMargin: "-22% 0px -10% 0px",
+    threshold: 0,
+  }
+);
 
     io.observe(el);
     return () => io.disconnect();

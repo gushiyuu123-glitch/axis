@@ -89,7 +89,7 @@ export default function Statement() {
       },
       {
         threshold: 0.35,
-        rootMargin: "-20% 0px -10% 0px",
+        rootMargin: "-10% 0px -10% 0px",
       }
     );
 
