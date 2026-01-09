@@ -122,3 +122,40 @@ html {
   pointer-events: none;
   filter: blur(0.3px);
 }
+@keyframes fadeBreath {
+  0%,100% { opacity: 0.18; }
+  50% { opacity: 0.28; }
+}
+@keyframes goldFall {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+}
+
+.gold {
+  position: absolute;
+  top: 100%;
+  width: 1px;
+  height: 1px;
+  background: var(--gold);
+  pointer-events: none;
+  animation: goldFall 1.8s ease-out infinite;
+}
+
+.gold.left {
+  left: 48%;
+  animation-delay: 0.4s;
+}
+
+.gold.right {
+  left: 52%;
+  animation-delay: 0.9s;
+}

@@ -23,7 +23,10 @@ export default function Contact() {
       ([entry]) => {
         if (!entry.isIntersecting) return;
 
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+const tl = gsap.timeline({
+  defaults: { ease: "power3.out" },
+  delay: 0.2,
+});
 
         // 本体
         tl.to(block, {
@@ -47,10 +50,11 @@ export default function Contact() {
 
         io.disconnect(); // 一度きり
       },
-   {
-  rootMargin: "-20% 0px -10% 0px",
+{
+  rootMargin: "-30% 0px -15% 0px", // ← ここ
   threshold: 0,
 }
+
     );
 
     io.observe(el);

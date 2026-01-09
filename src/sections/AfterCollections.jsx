@@ -20,24 +20,24 @@ export default function AfterCollections() {
         const tl = gsap.timeline({
           defaults: { ease: "power2.out" },
         });
+tl.fromTo(
+  main,
+  { opacity: 0, y: 5 },
+  { opacity: 0.95, y: 0, duration: 1.35 } // 1.45 → 1.35
+)
+  .fromTo(
+    sub,
+    { opacity: 0, y: 4 },
+    { opacity: 0.9, y: 0, duration: 1.2 }, // 1.3 → 1.2
+    "-=0.55" // -0.6 → -0.55
+  )
+  .fromTo(
+    line,
+    { opacity: 0, scaleX: 0.6 },
+    { opacity: 0.25, scaleX: 1, duration: 1.2 }, // 1.3 → 1.2
+    "-=0.65" // -0.7 → -0.65
+  );
 
-        tl.fromTo(
-          main,
-          { opacity: 0, y: 5 },
-          { opacity: 0.95, y: 0, duration: 1.6 }
-        )
-          .fromTo(
-            sub,
-            { opacity: 0, y: 4 },
-            { opacity: 0.9, y: 0, duration: 1.4 },
-            "-=0.7"
-          )
-          .fromTo(
-            line,
-            { opacity: 0, scaleX: 0.6 },
-            { opacity: 0.25, scaleX: 1, duration: 1.4 },
-            "-=0.8"
-          );
 
         io.disconnect(); // 一度きり
       },

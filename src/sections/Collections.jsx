@@ -178,13 +178,67 @@ export default function Collections() {
           />
         ))}
         <div className="absolute inset-0 bg-black/60" />
+        
       </div>
+<p
+  aria-hidden
+  className="
+    absolute bottom-[8vh] right-[6vw]
+    text-[0.45rem]
+    tracking-[0.4em]
+    text-[var(--silver-dark)]
+    opacity-20
+    hidden md:block
+    select-none
+  "
+>
+  Choose carefully.
+  
+</p>
 
       {/* ===== CONTENT ===== */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-[18vh] md:py-[28vh]">
-        <p className="uppercase tracking-[0.32em] text-[0.65rem] text-muted mb-24 text-center md:text-left">
-          Collections
-        </p>
+<div className="relative inline-block group">
+  <p
+    className="
+      uppercase tracking-[0.32em] text-[0.65rem] text-muted
+      mb-24 text-center md:text-left
+      transition-opacity duration-700
+      group-hover:opacity-80
+      relative z-10
+    "
+  >
+    Collections
+  </p>
+
+  {/* ゴールドダスト（左） */}
+  <span
+    aria-hidden
+    className="
+      pointer-events-none
+      absolute left-[48%] top-full
+      w-px h-px
+      bg-[var(--gold)]
+      opacity-0
+      group-hover:animate-[goldFall_1.8s_ease-out_infinite]
+    "
+  />
+
+  {/* ゴールドダスト（右） */}
+  <span
+    aria-hidden
+    className="
+      pointer-events-none
+      absolute left-[52%] top-full
+      w-px h-px
+      bg-[var(--gold)]
+      opacity-0
+      group-hover:animate-[goldFall_2.1s_ease-out_infinite]
+    "
+  />
+</div>
+
+
 
         <div className="space-y-20 md:space-y-28">
           {collections.map((c) => (

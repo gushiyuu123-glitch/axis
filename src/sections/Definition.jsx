@@ -1,7 +1,51 @@
 // src/sections/Definition.jsx
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function Definition() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const items = el.querySelectorAll("[data-smoke]");
+    if (!items.length) return;
+
+    // 初期状態：煙の中
+    gsap.set(items, {
+      opacity: 0,
+      y: 4,
+      filter: "blur(6px)",
+    });
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+gsap.to(items, {
+  opacity: 1,
+  y: 0,
+  filter: "blur(0px)",
+  duration: 1.25,
+  ease: "power2.out",
+  stagger: 0, // ← 完全同時
+});
+
+        io.disconnect();
+      },
+      {
+        rootMargin: "-25% 0px -20% 0px",
+        threshold: 0,
+      }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="
         relative
         max-w-3xl
@@ -9,19 +53,12 @@ export default function Definition() {
         px-6
         text-center
         overflow-hidden
-
-        /* SP */
         py-[18vh]
-
-        /* PC */
         md:py-[26vh]
       "
       aria-label="AXIS definition"
     >
-      {/* =====================
-          ABSTRACT BACKGROUND
-          ※ 空気だけ。動かさない
-      ===================== */}
+      {/* 空気 */}
       <div
         aria-hidden
         className="
@@ -38,12 +75,9 @@ export default function Definition() {
         "
       />
 
-      {/* =====================
-          CONTENT
-          ※ 最初から在る
-      ===================== */}
       <div className="relative z-10">
         <p
+          data-smoke
           className="
             mb-10
             text-[0.6rem]
@@ -55,16 +89,13 @@ export default function Definition() {
         </p>
 
         <p
+          data-smoke
           className="
             font-serif
             tracking-[0.22em]
             text-[var(--silver-mid)]
-
-            /* SP */
             text-[0.95rem]
             leading-[2.3]
-
-            /* PC */
             md:text-[1.05rem]
             md:leading-[2.6]
           "
@@ -75,16 +106,13 @@ export default function Definition() {
         </p>
 
         <p
+          data-smoke
           className="
             uppercase
             text-[var(--silver-dark)]
-
-            /* SP */
             mt-12
             text-[0.55rem]
             tracking-[0.3em]
-
-            /* PC */
             md:mt-16
             md:text-[0.6rem]
             md:tracking-[0.32em]
